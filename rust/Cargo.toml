@@ -1,0 +1,59 @@
+[package]
+name = "router-1c-mcp"
+version = "0.8.0"
+edition = "2021"
+license = "MIT"
+description = "router-1c-mcp: многобазовый MCP-прокси к опубликованным HTTP-сервисам 1С"
+
+[[bin]]
+name = "router-1c-mcp"
+path = "src/main.rs"
+
+[dependencies]
+# Async-рантайм
+tokio = { version = "1", features = ["full"] }
+
+# MCP — только серверная часть (форвард наружу делаем reqwest'ом, не rmcp-клиентом).
+rmcp = { version = "1.3", features = [
+    "server",
+    "transport-streamable-http-server",
+] }
+
+# HTTP-сервер и исходящий HTTP-клиент. default-features=false — тянем только нужное.
+# rustls-tls: базы 1С бывают опубликованы и по https://. Именно rustls, а не native-tls
+# (бинарь собирается под musl, OpenSSL там лишний); корневые сертификаты встроенные
+# (webpki-roots), поэтому TLS не зависит от набора сертификатов в образе.
+axum = "0.8"
+reqwest = { version = "0.12", default-features = false, features = [
+    "json",
+    "rustls-tls",
+    "stream",
+] }
+# Только `StreamExt::map`: пермит семафора должен жить вместе с потоком тела.
+futures-util = { version = "0.3", default-features = false }
+
+# Сериализация
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+
+# Утилиты
+anyhow = "1"
+arc-swap = "1"
+# UTC-метка `_generated` в файле состава инструментов (ISO-8601 с суффиксом Z).
+chrono = { version = "0.4", default-features = false, features = ["clock", "std"] }
+# Singleton PID-lock (опционально, только когда задан MCP_PID_FILE — Windows под
+# supervisor). В Docker не задаётся: singleton гарантирует сам контейнер.
+sysinfo = "0.32"
+
+# Логи
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter"] }
+
+[profile.release]
+opt-level = 3
+lto = "thin"
+codegen-units = 1
+strip = true
+
+[lints.clippy]
+all = { level = "deny", priority = -1 }

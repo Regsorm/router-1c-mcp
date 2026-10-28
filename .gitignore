@@ -1,0 +1,35 @@
+# Rust build artefacts (crate router-1c-mcp в rust/)
+/rust/target/
+
+# Python build artefacts
+__pycache__/
+*.pyc
+*.pyo
+*.egg-info/
+*.egg
+.venv/
+venv/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Локальный SQLite-кэш индексатора code-index
+.code-index/
+
+# Локальные пользовательские настройки Claude Code
+.claude/
+
+# Секреты и локальная конфигурация
+.env
+.env.local
+.mcp.json
+
+# IDE
+.vscode/
+.idea/
+
+# OS / editor temp
+*.swp
+*~
+.DS_Store
+Thumbs.db
