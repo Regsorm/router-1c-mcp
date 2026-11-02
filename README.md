@@ -1,3 +1,11 @@
+<a href="https://infostart.ru/1c/articles/2835463/" title="Published on Infostart">
+  <img src="https://infostart.ru/bitrix/templates/sandbox_empty/assets/tpl/abo/img/logo.svg" alt="Infostart" height="32">
+</a>
+
+Published on Infostart: [router-1c-mcp — один MCP-сервер на все базы 1С](https://infostart.ru/1c/articles/2835463/)
+
+---
+
 # router-1c-mcp
 
 MCP-сервер на Rust: один процесс обслуживает несколько баз 1С и пересылает
